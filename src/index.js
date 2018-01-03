@@ -35,29 +35,32 @@ class MoneyEntry extends Component {
   constructor(props) {
     super(props)
     this.state = {date: '', item: '', payingIn: true}
+    this.date = null
+    this.item = null
+    this.amount = null
+    this.payingIn = null
   }
-  onChangePayingIn(event) {
-    this.setState({payingIn: event.target.value == 'on'})
-  }
+  // onChangePayingIn(event) {
+  //   this.setState({payingIn: event.target.value == 'on'})
+  // }
   onClickSubmit() {
-    this.props.add(this.state.date, this.state.item, this.state.amount * (this.state.payingIn ? 1 : -1))
-    this.setState({date: '', item: '', payingIn: false})
+    this.props.add(this.date.value, this.item.value, this.amount.value * (this.payingIn.checked ? 1 : -1))
   }
-  onChangeValue(event) {
-    this.setState({[event.target.name] : event.target.value})
-  }
+  // onChangeValue(event) {
+  //   this.setState({[event.target.name] : event.target.value})
+  // }
   render() {
     return (
       <div className="entry">
         <fieldset>
           <legend>記帳</legend>
           <div>
-            <input type="radio" value="on" checked={this.state.payingIn} onChange={(event) => this.onChangePayingIn(event)} /> 入金
-            <input type="radio" value="off" checked={!this.state.payingIn} onChange={(event) => this.onChangePayingIn(event)} /> 出金
+            <input type="radio" defaultChecked name="payingInOut" ref={(node) => this.payingIn = node} /> 入金
+            <input type="radio" name="payingInOut" /> 出金
           </div>
-          <div>日付: <input type="text" value={this.state.date} name="date" onChange={(e) => this.onChangeValue(e)} placeholder="3/15" /> </div>
-          <div>項目: <input type="text" value={this.state.item} name="item" onChange={(e) => this.onChangeValue(e)} placeholder="おこづかい" /> </div>
-          <div>金額: <input type="text" value={this.state.amount} name="amaount" onChange={(e) => this.onChangeValue(e)} placeholder="1000" /> </div>
+          <div>日付: <input type="text" defaultValue="" ref={(node) => this.date = node} placeholder="3/15" /> </div>
+          <div>項目: <input type="text" defaultValue="" ref={(node) => this.item = node} placeholder="おこづかい" /> </div>
+          <div>金額: <input type="text" defaultValue="" ref={(node) => this.amount = node} placeholder="1000" /> </div>
           <div> <input type="submit" value="追加" onClick={() => this.onClickSubmit()} /> </div>
         </fieldset>
       </div>
